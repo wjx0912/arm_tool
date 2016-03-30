@@ -1,5 +1,7 @@
 编译：
 
-CC=arm-fsl-linux-gnueabi   ./configure --host=arm-linux
+CC=arm-fsl-linux-gnueabi-gcc   ./configure --host=arm-linux
 
-make CFLAGS+="-static"
+make CFLAGS+="-static" V=1
+
+本工程的strace已经静态编译，可以直接拷到arm里面使用
