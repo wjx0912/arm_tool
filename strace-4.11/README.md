@@ -1,6 +1,6 @@
 编译：
 
-CC=arm-fsl-linux-gnueabi-gcc   ./configure --host=arm-linux
+CC=arm-linux-gnueabihf-gcc   ./configure --host=arm-linux
 
 make CFLAGS+="-static" V=1
 
