@@ -12,4 +12,9 @@ cd tcpdump-4.7.4
 
 常用指令
 
+	tcpdump
 	tcpdump -i eth0
+	tcpdump tcp port 12345
+	tcpdump udp port 54321
+	tcpdump -x
+	tcpdump ip host 192.168.1.23
