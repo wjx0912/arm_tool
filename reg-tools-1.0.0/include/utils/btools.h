@@ -37,6 +37,8 @@ HI_RET himd(int argc , char* argv[]);
 
 HI_RET himm(int argc , char* argv[]);
 
+HI_RET himm_b(int argc , char* argv[]);
+
 HI_RET hivd(int argc , char* argv[]);
 
 

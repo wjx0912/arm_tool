@@ -99,6 +99,33 @@ HI_RET himm(int argc , char* argv[])
     return 0;
 }
 
+HI_RET himm_b(int argc , char* argv[])
+{
+    U32 ulAddr = 0;
+    U32 ulOld, ulNew;
+    char strNew[16];
+    VOID* pMem  = NULL;
+
+    //printf("%s: %d.........\n", __func__, __LINE__);
+    if (argc != 3)
+    {
+        printf("usage: %s <address>. sample: %s 0x80040000 0x33\n", argv[0], argv[0]);
+        EXIT("", -1);
+    }
+
+    if( StrToNumber(argv[1], &ulAddr) == HI_SUCCESS &&  
+        StrToNumber(argv[2], &ulNew) == HI_SUCCESS)
+    {
+        pMem = memmap(ulAddr, DEFAULT_MD_LEN);
+        ulOld = *(unsigned char*)pMem;
+        /*hi_hexdump(STDOUT, pMem, DEFAULT_MD_LEN, 16);*/
+        printf("%s: 0x%X --> 0x%X \n", argv[1], (unsigned char)ulOld, (unsigned char)ulNew);
+        *(unsigned char*)pMem = (unsigned char)ulNew;
+    }
+
+    return 0;
+}
+
 #ifdef __cplusplus
 #if __cplusplus
 }

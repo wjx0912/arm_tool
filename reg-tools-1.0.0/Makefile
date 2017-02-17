@@ -7,7 +7,7 @@
 
 TARGET=ARM
 
-CROSS=arm-hismall-linux-
+CROSS=arm-none-linux-gnueabi-
 
 
 CPU_TYPE=ARM
@@ -141,6 +141,7 @@ btools:$(OUTDIR) $(OBJ) $(BTOOLS_OBJ)
 	ln -s btools himd
 	ln -s btools himd.l
 	ln -s btools himm
+	ln -s btools himm.b
 	ln -s btools himc
 	
 install: all strip cp
@@ -157,7 +158,7 @@ clean:
 	rm -f $(OUTFILE)
 	rm -f $(OBJ)
 	rm -f $(OUTDIR)/*.o
-	rm -f himd himm himc himd.l
+	rm -f himd himm himc himd.l himm.b
 
 # Clean this project and all dependencies
 cleanall: clean

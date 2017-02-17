@@ -105,6 +105,7 @@ VOID Log_Destroy(IO  LOG_QUEUE*  pLogQueue )
 VOID Log_Msg(IO  LOG_QUEUE*  pLogQueue,IN U32 ucLogLevel, 
                     IN char *psz_format, ... )
 {
+    /*
     DBG_ASSERT(pLogQueue);
     
     if (pLogQueue->ucMinLevel < ucLogLevel)
@@ -116,6 +117,7 @@ VOID Log_Msg(IO  LOG_QUEUE*  pLogQueue,IN U32 ucLogLevel,
     va_start( args, psz_format );
     Log_PrintMsg( pLogQueue, ucLogLevel, psz_format, args );
     va_end( args );
+    */
 }
 
 VOID Log_MsgVa(IO  LOG_QUEUE*  pLogQueue,IN U32 ucLogLevel, 

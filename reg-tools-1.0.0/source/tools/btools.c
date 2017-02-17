@@ -50,6 +50,7 @@ static CMD_SHELL_T gBToolsCmds[] =
     CMD_SHELL_DEF("himd", CMD_ENABLE, himd,"memory display (8bit)")
     CMD_SHELL_DEF("himd.l", CMD_ENABLE, himd_l,"memory display (32bit)")
     CMD_SHELL_DEF("himm", CMD_ENABLE, himm,"memory modify")
+    CMD_SHELL_DEF("himm.b", CMD_ENABLE, himm_b,"memory modify (8bit)")
     CMD_SHELL_DEF("hivd", CMD_ENABLE, hivd,"video dump")    
     CMD_SHELL_DEF("himdb", CMD_ENABLE, himdb,"video dump")    
 
@@ -218,7 +219,7 @@ int main(int argc , char* argv[])
         return HI_SUCCESS;
     }
 
-    (void)print_version_message(argc, argv);
+    //(void)print_version_message(argc, argv);
     hiDo = (HI_RET)CMD_SHELL_RUN_2(argc, argv, (CMD_SHELL_T*)gBToolsCmds);
     
     if (hiDo != HI_SUCCESS)
