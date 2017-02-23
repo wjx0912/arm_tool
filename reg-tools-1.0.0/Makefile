@@ -139,6 +139,7 @@ btools:$(OUTDIR) $(OBJ) $(BTOOLS_OBJ)
 	$(LINK)   $(BTOOLS_OBJ)
 	$(STRIP) btools
 	ln -s btools himd
+	ln -s btools himd.b
 	ln -s btools himd.l
 	ln -s btools himm
 	ln -s btools himm.b
@@ -158,7 +159,7 @@ clean:
 	rm -f $(OUTFILE)
 	rm -f $(OBJ)
 	rm -f $(OUTDIR)/*.o
-	rm -f himd himm himc himd.l himm.b
+	rm -f himd himm himc himd.b himd.l himm.b
 
 # Clean this project and all dependencies
 cleanall: clean

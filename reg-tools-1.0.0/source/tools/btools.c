@@ -47,7 +47,8 @@ static ARGOpt_t opts[] =
 static CMD_SHELL_T gBToolsCmds[] =
 {
     CMD_SHELL_DEF("himc", CMD_ENABLE, himc,"memory clear")
-    CMD_SHELL_DEF("himd", CMD_ENABLE, himd,"memory display (8bit)")
+    CMD_SHELL_DEF("himd.b", CMD_ENABLE, himd_b,"memory display (8bit)")
+    CMD_SHELL_DEF("himd", CMD_ENABLE, himd,"memory display (128 * 8bit)")
     CMD_SHELL_DEF("himd.l", CMD_ENABLE, himd_l,"memory display (32bit)")
     CMD_SHELL_DEF("himm", CMD_ENABLE, himm,"memory modify")
     CMD_SHELL_DEF("himm.b", CMD_ENABLE, himm_b,"memory modify (8bit)")

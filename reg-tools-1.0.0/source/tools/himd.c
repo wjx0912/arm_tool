@@ -151,6 +151,62 @@ HI_RET himd(int argc , char* argv[])
     return 0;
 }
 
+HI_RET himd_b(int argc , char* argv[])
+{
+    U32 ulAddr = 0;
+    VOID* pMem  = NULL;
+    LENGTH_T len;
+
+    if (argc < 2)
+    {
+        printf("usage: %s <address>. sample: %s 0x80040000\n", argv[0], argv[0]);
+        EXIT("", -1);
+    }
+
+
+    if (argc == 3)
+    {
+         if ( StrToNumber(argv[2], &len) != HI_SUCCESS)
+        {
+            len = DEFAULT_MD_LEN;
+        }
+    }
+    else
+    {
+        len = DEFAULT_MD_LEN;
+    }
+    
+
+    if( StrToNumber(argv[1], &ulAddr) == HI_SUCCESS)
+    {
+        printf("====dump memory %#010lX====\n", ulAddr);
+        #ifdef PC_EMULATOR
+        #define SHAREFILE "../shm"
+        printf("**** is Emulator, use share file : %s ****\n", SHAREFILE);
+        pMem = mmapfile(SHAREFILE , len);
+        if (NULL == pMem)
+        {
+            EXIT("Memory Map error.", -1);
+        }
+        pMem += ulAddr;
+        #else        
+        pMem = memmap(ulAddr, len);
+        if (NULL == pMem)
+        {
+            EXIT("Memory Map error.", -1);
+        }        
+        #endif
+        
+        hi_hexdump_byte(STDOUT, pMem, len, 16);
+    }
+    else
+    {
+        printf("Please input address like 0x12345\n");
+    }
+    
+    return 0;
+}
+
 /*memory dump bin*/
 HI_RET himdb(int argc , char* argv[])
 {

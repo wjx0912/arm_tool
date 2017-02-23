@@ -72,13 +72,70 @@ HI_RET hi_md2file(IN VOID* pStart,IN  U32 ulLen,
     
 }
 
-
 VOID hi_hexdump(OUT FILE *stream, 
                         IN const void *src, IN size_t len, 
                         IN size_t width)
 {
     unsigned int rows, pos, c, i;
     const char *start, *rowpos, *data;
+
+    data = src;
+    start = data;
+    pos = 0;
+    rows = (len % width) == 0 ? len / width : len / width + 1;
+    for (i = 0; i < rows; i++) 
+    {
+        rowpos = data;
+        fprintf(stream, "%05x: ", pos);
+        do 
+        {
+            c = *data++ & 0xff;
+            if ((size_t)(data - start) <= len) 
+            {
+                fprintf(stream, " %02x", c);
+            } 
+            else 
+            {
+                fprintf(stream, "   ");
+            }
+        } 
+        while(((data - rowpos) % width) != 0);
+        
+        fprintf(stream, "  |");
+        data -= width;
+        do 
+        {
+            c = *data++;
+            if (isprint(c) == 0 || c == '\t') 
+            {
+                c = '.';
+            }
+            if ((size_t)(data - start) <= len) 
+            {
+                fprintf(stream, "%c", c);
+            } 
+            else 
+            {
+                fprintf(stream, " ");
+            }
+        } 
+        while(((data - rowpos) % width) != 0);
+        fprintf(stream, "|\n");
+        pos += width;
+    }
+    fflush(stream);
+}
+
+VOID hi_hexdump_byte(OUT FILE *stream, 
+                        IN const void *src, IN size_t len, 
+                        IN size_t width)
+{
+    unsigned int rows, pos, c, i;
+    const char *start, *rowpos, *data;
+
+#if 1
+	len = 1;
+#endif
 
     data = src;
     start = data;
