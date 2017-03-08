@@ -10,6 +10,12 @@
 
 #define COMM_DEBUG_OUTPUT
 
+#if 0
+#define dprintf		printf
+#else
+#define dprintf
+#endif
+
 // ========================================================================
 
 
@@ -123,8 +129,6 @@ int CommSetAttribute(int fd_com, COMM_ATTR *pattr)
 	tcgetattr(dev_fd, &opt);
 	cfmakeraw(&opt);			
 
-	
-	printf("set baudrate %d\n", attr->baudrate);
 	switch (attr->baudrate)
 	{
 		case 50:
@@ -315,7 +319,7 @@ int CommSetAttribute(int fd_com, COMM_ATTR *pattr)
 	tcflush(dev_fd, TCIOFLUSH);
 	if (tcsetattr(dev_fd, TCSANOW, &opt) < 0)
 	{
-		ERR_PRINT("tcsetattr\n");
+		ERR_PRINT("tcsetattr");
 		return -1;
 	}
 
@@ -439,13 +443,13 @@ void format_show_char(unsigned char byte)
 
 int main(int argc, char *argv[])
 {
-	printf("version: %s %s\n", __DATE__, __TIME__);
+	dprintf("version: %s %s\n", __DATE__, __TIME__);
 
 	if(1 == argc) {
 		printf("usage:\n" \
-			"\t%s /dev/ttySP2 115200 test\n" \
-			"\t%s /dev/ttySP2 115200 read\n" \
-			"\t%s /dev/ttySP2 115200 write 5a a5 04 80 03 00 03\n" \
+			"\t%s /dev/ttyS0 115200 test\n" \
+			"\t%s /dev/ttyS0 115200 read\n" \
+			"\t%s /dev/ttyS0 115200 write 5a a5 04 80 03 00 03\n" \
 			"", argv[0], argv[0], argv[0]);
 		return -1;
 	}
@@ -453,6 +457,7 @@ int main(int argc, char *argv[])
 	int fd_com = CommOpen(argv[1]);
 	if(fd_com < 0)
 		return -1;
+	dprintf("------CommOpen\n");
 
 	COMM_ATTR attr = {0 };
 	//attr.baudrate = 115200;
@@ -462,16 +467,18 @@ int main(int argc, char *argv[])
 	attr.stopbits = COMM_ONESTOPBIT;	// 1Î»Í£Ö¹Î»
 	if(CommSetAttribute(fd_com, &attr) !=0)
 		printf("set com attr failed\n");
+	dprintf("------CommSetAttribute\n");
 
 	// flush tx, rx
 	CommPurge(fd_com, COMM_PURGE_RXCLEAR);
 	CommPurge(fd_com, COMM_PURGE_RXCLEAR);
+	dprintf("------CommPurge\n");
 
 	// ¶Á²âÊÔ
 	if(0 == strcmp(argv[3], "read")){
 		//int cnt = 0;
 		unsigned char byte;
-		printf("now read data from serial......\n");
+		dprintf("now read data from serial......\n");
 		while(1) {
 			int ret = CommRead(fd_com, &byte, 1);
 			if(ret > 0) {
@@ -487,11 +494,18 @@ int main(int argc, char *argv[])
 		int i;
 		int ret;
 
+		dprintf("------printfbin\n");
 		for(i = 0; i < num; i++)
 			pdata[i] = (char)strtoul(argv[4 + i], NULL, 16);
 		dprintfbin(pdata, num);
+		dprintf("------before call CommWrite().\n");
 		ret = CommWrite(fd_com, pdata, num);
-		if(ret != num)
+
+		dprintf("------write size %s, num: %d, ret: %d\n"
+			, num == ret? "ok": "error"
+			, num
+			, ret
+			);
 		free(pdata);
 	}
 
@@ -505,6 +519,7 @@ int main(int argc, char *argv[])
 		}
 	}
 
+	dprintf("------before call CommDestory().\n");
 	CommDestory(fd_com);
 	return 0;
 }
